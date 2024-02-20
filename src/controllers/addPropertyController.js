@@ -1,15 +1,12 @@
 import express from 'express'
+import { addProperty, getProperty } from '../services/addPropertyServices.js'
 
 const router = express.Router()
 
 router
 	.route('/addProperty')
-	.get((req, res) => {
-		res.end('get')
-	})
-	.post((req, res) => {
-		res.end('post')
-	})
+	.get(getProperty)
+	.post(addProperty)
 	.put((req, res) => {
 		res.end('put')
 	})
