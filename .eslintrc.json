@@ -25,6 +25,7 @@
 		],
 		"linebreak-style": 0,
 		"object-curly-newline": "off",
+		"import/extensions": "off",
 		"prettier/prettier": [
 			"error",
 			{
