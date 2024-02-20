@@ -16,6 +16,10 @@ const PlaceSchema = new Schema({
 })
 
 const AddPropertySchema = new Schema({
+	ID: {
+		type: String,
+		required: true,
+	},
 	title: {
 		type: String,
 		required: true,

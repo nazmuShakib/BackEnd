@@ -1,4 +1,5 @@
 import AddPropertyModel from '../models/addPropertyModel.js'
+import getNanoID from '../utils/uniqueIdGenerator.js'
 
 const getProperty = async (req, res) => {
 	const data = await AddPropertyModel.find()
@@ -8,8 +9,11 @@ const getProperty = async (req, res) => {
 }
 const addProperty = async (req, res) => {
 	try {
+		const propertyID = getNanoID(22)
+		console.log(propertyID)
 		const data = req.body
 		const newProperty = new AddPropertyModel({
+			ID: propertyID,
 			title: data.title,
 			availableDate: data.availableDate,
 			gender: data.gender,
