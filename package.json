@@ -1,0 +1,20 @@
+{
+	"name": "BackEnd",
+	"type": "module",
+	"version": "1.0.0",
+	"description": "BackEnd logic of Student Housing Rental System",
+	"main": "index.js",
+	"author": "null0ptr",
+	"scripts": {
+		"dev": "node --watch index.js"
+	},
+	"license": "MIT",
+	"devDependencies": {
+		"eslint": "^8.2.0",
+		"eslint-config-airbnb-base": "15.0.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-import": "^2.25.2",
+		"eslint-plugin-prettier": "^5.1.3",
+		"prettier": "^3.2.5"
+	}
+}

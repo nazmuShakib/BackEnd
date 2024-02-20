@@ -1,0 +1,43 @@
+{
+	"extends": [
+		"prettier",
+		"airbnb-base",
+		"eslint:recommended"
+	],
+	"parserOptions": {
+		"ecmaVersion": "latest"
+	},
+	"env": {
+		"es2022": true,
+		"node": true
+	},
+	"rules": {
+		"no-unused-vars": "warn",
+		"semi": "off",
+		"no-console": 0,
+		"comma-dangle": [
+			"off"
+		],
+		"no-tabs": "off",
+		"indent": [
+			"error",
+			"tab"
+		],
+		"linebreak-style": 0,
+		"object-curly-newline": "off",
+		"prettier/prettier": [
+			"error",
+			{
+				"singleQuote": true,
+				"printWidth": 80,
+				"useTabs": true,
+				"tabWidth": 2,
+				"semi": false,
+				"proseWrap": "always"
+			}
+		]
+	},
+	"plugins": [
+		"prettier"
+	]
+}
