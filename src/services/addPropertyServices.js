@@ -11,24 +11,32 @@ const addProperty = async (req, res) => {
 	try {
 		const propertyID = getNanoID(22)
 		console.log(propertyID)
-		const data = req.body
+		const { data } = req.body
+		const images = req.files
+		const imageNames = images.map((image) => image.originalname)
+		const propertyData = {
+			...JSON.parse(data),
+			images: imageNames,
+		}
+		console.log(propertyData)
 		const newProperty = new AddPropertyModel({
 			ID: propertyID,
-			title: data.title,
-			availableDate: data.availableDate,
-			gender: data.gender,
-			category: data.category,
-			description: data.description,
-			rulesAndPreference: data.rulesAndPreference,
-			requiredDocuments: data.requiredDocuments,
+			title: propertyData.title,
+			availableDate: propertyData.date,
+			gender: propertyData.gender,
+			category: propertyData.category,
+			description: propertyData.description,
+			rulesAndPreference: propertyData.rules_and_preference,
+			requiredDocuments: propertyData.required_documents,
 			placeInfo: {
-				division: data.division,
-				district: data.district,
-				thana: data.thana,
+				division: propertyData.division,
+				district: propertyData.district,
+				thana: propertyData.thana,
 			},
-			price: data.price,
-			address: data.address,
-			mapCoordinate: data.mapCoordinate,
+			price: propertyData.price,
+			address: propertyData.address,
+			images: propertyData.images,
+			mapCoordinate: propertyData.location,
 		})
 		await newProperty.save()
 		res.end('Success')

@@ -57,6 +57,10 @@ const AddPropertySchema = new Schema({
 		type: String,
 		required: true,
 	},
+	images: {
+		type: Array,
+		required: true,
+	},
 	mapCoordinate: {
 		type: Object,
 		required: true,
