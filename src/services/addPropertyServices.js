@@ -1,5 +1,6 @@
 import AddPropertyModel from '../models/addPropertyModel.js'
 import getNanoID from '../utils/uniqueIdGenerator.js'
+import containerClient from '../utils/connectBlobDB.js'
 
 const getProperty = async (req, res) => {
 	const data = await AddPropertyModel.find()
