@@ -1,6 +1,6 @@
 import AddPropertyModel from '../models/addPropertyModel.js'
-import getNanoID from '../utils/uniqueIdGenerator.js'
-import containerClient from '../utils/connectBlobDB.js'
+import { getNanoID } from '../utils/uniqueIdGenerator.js'
+import uploadImageToStorage from '../utils/AzureBlobDB.js'
 
 const getProperty = async (req, res) => {
 	const data = await AddPropertyModel.find()
@@ -11,15 +11,15 @@ const getProperty = async (req, res) => {
 const addProperty = async (req, res) => {
 	try {
 		const propertyID = getNanoID(22)
-		console.log(propertyID)
 		const { data } = req.body
 		const images = req.files
-		const imageNames = images.map((image) => image.originalname)
+		console.log(images)
+		const imageNames = images.map((name) => name.originalname)
+		// await Promise.all(images.map((image) => uploadImageToStorage(image, propertyID)))
 		const propertyData = {
 			...JSON.parse(data),
 			images: imageNames,
 		}
-		console.log(propertyData)
 		const newProperty = new AddPropertyModel({
 			ID: propertyID,
 			title: propertyData.title,
@@ -39,7 +39,7 @@ const addProperty = async (req, res) => {
 			images: propertyData.images,
 			mapCoordinate: propertyData.location,
 		})
-		await newProperty.save()
+		// await newProperty.save()
 		res.end('Success')
 	} catch (err) {
 		console.log(err.message)
