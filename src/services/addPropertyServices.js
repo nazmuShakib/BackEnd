@@ -1,6 +1,6 @@
 import AddPropertyModel from '../models/addPropertyModel.js'
 import { getNanoID } from '../utils/uniqueIdGenerator.js'
-import uploadImageToStorage from '../utils/AzureBlobDB.js'
+import { getImageUrls, uploadImageToStorage } from '../utils/AzureBlobDB.js'
 
 const addProperty = async (req, res) => {
 	try {
@@ -13,6 +13,7 @@ const addProperty = async (req, res) => {
 			...JSON.parse(data),
 			images: imageNames,
 		}
+		const imageUrls = getImageUrls(images, propertyID)
 		const newProperty = new AddPropertyModel({
 			ID: propertyID,
 			title: propertyData.title,
@@ -31,6 +32,7 @@ const addProperty = async (req, res) => {
 			address: propertyData.address,
 			images: propertyData.images,
 			mapCoordinate: propertyData.location,
+			imageUrls,
 		})
 		await newProperty.save()
 		res.status(200).end('Property saved successfully')

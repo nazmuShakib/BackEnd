@@ -14,4 +14,12 @@ const uploadImageToStorage = async (image, propertyID) => {
 	const imageBuffer = await sharp(image.buffer).toFormat('webp', { quality: 80 }).toBuffer()
 	blockBlobClient.upload(imageBuffer, imageBuffer.length)
 }
-export default uploadImageToStorage
+const getImageUrls = (images, propertyID) => {
+	const imageUrls = images.map((image) => {
+		const containerUrl = containerClient.url
+		const blobName = `${propertyID}/${getImageHash(image.originalname, propertyID)}.webp`
+		return `${containerUrl}/${blobName}`
+	})
+	return imageUrls
+}
+export { uploadImageToStorage, getImageUrls }
