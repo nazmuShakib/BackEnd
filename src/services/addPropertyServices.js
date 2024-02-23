@@ -1,6 +1,11 @@
 import AddPropertyModel from '../models/addPropertyModel.js'
 import { getNanoID } from '../utils/uniqueIdGenerator.js'
-import { getImageUrls, uploadImageToStorage, uploadThumbnail } from '../utils/AzureBlobDB.js'
+import {
+	getImageUrls,
+	getThumbnailURL,
+	uploadImageToStorage,
+	uploadThumbnail,
+} from '../utils/AzureBlobDB.js'
 
 const addProperty = async (req, res) => {
 	try {
@@ -9,8 +14,8 @@ const addProperty = async (req, res) => {
 		const images = req.files
 		const imageNames = images.map((name) => name.originalname)
 		await Promise.all(images.map((image) => uploadImageToStorage(image, propertyID)))
-		const thumbnail = `${propertyID}/thumbnail.webp`
-		uploadThumbnail(images[0], propertyID)
+		await uploadThumbnail(images[0], propertyID)
+		const thumbnail = getThumbnailURL(propertyID)
 		const propertyData = {
 			...JSON.parse(data),
 			images: imageNames,

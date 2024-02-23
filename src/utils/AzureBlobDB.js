@@ -13,24 +13,47 @@ const uploadImageToStorage = async (image, propertyID) => {
 	const blobPlaceHolderName = `${propertyID}/${getImageHash(image.originalname, propertyID)}-placeholder.webp`
 	const blockBlobClient = containerClient.getBlockBlobClient(blobName)
 	const blockBlobPlaceHolderClient = containerClient.getBlockBlobClient(blobPlaceHolderName)
-	const imageBuffer = await sharp(image.buffer).toFormat('webp', { quality: 80 }).toBuffer()
-	const imagePlaceHolderBuffer = await sharp(image.buffer).resize(32, 32).toFormat('webp').toBuffer()
+	const imageBuffer = await sharp(image.buffer)
+		.resize(800, 600, {
+			fit: 'contain',
+		})
+		.toFormat('webp', { quality: 80 })
+		.toBuffer()
+	const imagePlaceHolderBuffer = await sharp(image.buffer)
+		.resize(32, 32, {
+			fit: 'cover',
+		})
+		.toFormat('webp')
+		.toBuffer()
 	blockBlobClient.upload(imageBuffer, imageBuffer.length)
 	blockBlobPlaceHolderClient.upload(imagePlaceHolderBuffer, imagePlaceHolderBuffer.length)
 }
 const uploadThumbnail = async (image, propertyID) => {
 	const blobName = `${propertyID}/thumbnail.webp`
 	const blockBlobClient = containerClient.getBlockBlobClient(blobName)
-	const thumbBuffer = await sharp(image.buffer).resize(224, 224).toFormat('webp').toBuffer()
-	await blockBlobClient.upload(thumbBuffer, thumbBuffer.length)
+	const thumbBuffer = await sharp(image.buffer)
+		.resize(224, 224, {
+			fit: 'fill',
+		})
+		.toFormat('webp')
+		.toBuffer()
+	blockBlobClient.upload(thumbBuffer, thumbBuffer.length)
+}
+const getThumbnailURL = (propertyID) => {
+	const blobName = `${propertyID}/thumbnail.webp`
+	const thumbnailURL = `${containerClient.url}/${blobName}`
+	return thumbnailURL
 }
 const getImageUrls = (images, propertyID) => {
 	const imageUrls = images.map((image) => {
 		const containerUrl = containerClient.url
 		const blobName = `${propertyID}/${getImageHash(image.originalname, propertyID)}.webp`
 		const blobPlaceHolderName = `${propertyID}/${getImageHash(image.originalname, propertyID)}-placeholder.webp`
-		return { original: `${containerUrl}/${blobName}`, placeHolder: `${containerUrl}/${blobPlaceHolderName}` }
+		return {
+			original: `${containerUrl}/${blobName}`,
+			placeHolder: `${containerUrl}/${blobPlaceHolderName}`,
+		}
 	})
 	return imageUrls
 }
-export { uploadImageToStorage, uploadThumbnail, getImageUrls }
+export { uploadImageToStorage, uploadThumbnail, getImageUrls, getThumbnailURL }
