@@ -13,8 +13,8 @@ const addProperty = async (req, res) => {
 		const { data } = req.body
 		const images = req.files
 		const imageNames = images.map((name) => name.originalname)
-		// await Promise.all(images.map((image) => uploadImageToStorage(image, propertyID)))
-		// await uploadThumbnail(images[0], propertyID)
+		await Promise.all(images.map((image) => uploadImageToStorage(image, propertyID)))
+		await uploadThumbnail(images[0], propertyID)
 		const thumbnail = getThumbnailURL(propertyID)
 		const propertyData = {
 			...JSON.parse(data),
@@ -35,7 +35,7 @@ const addProperty = async (req, res) => {
 				district: propertyData.district,
 				thana: propertyData.thana,
 			},
-			price: propertyData.price,
+			price: parseInt(propertyData.price, 10),
 			address: propertyData.address,
 			images: propertyData.images,
 			location: {

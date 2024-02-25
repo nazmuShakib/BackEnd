@@ -19,7 +19,6 @@ const getPropertyByID = async (req, res) => {
 const getProperty = async (req, res) => {
 	try {
 		const data = await PropertyModel.find()
-		console.log(data.length)
 		res.json({ data })
 	} catch (err) {
 		res.json({
