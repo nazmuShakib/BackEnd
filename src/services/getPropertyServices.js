@@ -1,9 +1,9 @@
-import AddPropertyModel from '../models/addPropertyModel.js'
+import PropertyModel from '../models/propertyModel.js'
 
 const getPropertyByID = async (req, res) => {
 	try {
 		const id = req.params.propertyID
-		const property = await AddPropertyModel.findOne(
+		const property = await PropertyModel.findOne(
 			{ ID: id },
 			{ _id: 0, __v: 0, createdAt: 0, updatedAt: 0 },
 		)
@@ -18,7 +18,8 @@ const getPropertyByID = async (req, res) => {
 }
 const getProperty = async (req, res) => {
 	try {
-		const data = await AddPropertyModel.find()
+		const data = await PropertyModel.find()
+		console.log(data.length)
 		res.json({ data })
 	} catch (err) {
 		res.json({

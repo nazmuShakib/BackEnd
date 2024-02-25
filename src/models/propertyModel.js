@@ -15,7 +15,7 @@ const PlaceSchema = new Schema({
 	},
 })
 
-const AddPropertySchema = new Schema(
+const PropertySchema = new Schema(
 	{
 		ID: {
 			type: String,
@@ -70,12 +70,20 @@ const AddPropertySchema = new Schema(
 			type: Array,
 			required: true,
 		},
-		mapCoordinate: {
-			type: Object,
-			required: true,
+		location: {
+			type: {
+				type: String,
+				enum: ['Point'],
+				required: true,
+			},
+			coordinates: {
+				type: [Number],
+				required: true,
+			},
 		},
 	},
 	{ timestamps: true },
 )
+PropertySchema.index({ location: '2dsphere' })
 
-export default model('addProperty', AddPropertySchema)
+export default model('property', PropertySchema)

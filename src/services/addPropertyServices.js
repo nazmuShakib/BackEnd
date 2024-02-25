@@ -1,4 +1,4 @@
-import AddPropertyModel from '../models/addPropertyModel.js'
+import PropertyModel from '../models/propertyModel.js'
 import { getNanoID } from '../utils/uniqueIdGenerator.js'
 import {
 	getImageUrls,
@@ -13,15 +13,15 @@ const addProperty = async (req, res) => {
 		const { data } = req.body
 		const images = req.files
 		const imageNames = images.map((name) => name.originalname)
-		await Promise.all(images.map((image) => uploadImageToStorage(image, propertyID)))
-		await uploadThumbnail(images[0], propertyID)
+		// await Promise.all(images.map((image) => uploadImageToStorage(image, propertyID)))
+		// await uploadThumbnail(images[0], propertyID)
 		const thumbnail = getThumbnailURL(propertyID)
 		const propertyData = {
 			...JSON.parse(data),
 			images: imageNames,
 		}
 		const imageUrls = getImageUrls(images, propertyID)
-		const newProperty = new AddPropertyModel({
+		const newProperty = new PropertyModel({
 			ID: propertyID,
 			title: propertyData.title,
 			availableDate: propertyData.date,
@@ -38,7 +38,10 @@ const addProperty = async (req, res) => {
 			price: propertyData.price,
 			address: propertyData.address,
 			images: propertyData.images,
-			mapCoordinate: propertyData.location,
+			location: {
+				type: 'Point',
+				coordinates: [propertyData.location.lng, propertyData.location.lat],
+			},
 			imageUrls,
 			thumbnail,
 		})
@@ -46,7 +49,7 @@ const addProperty = async (req, res) => {
 		res.status(200).end('Property saved successfully')
 	} catch (err) {
 		console.log(err.message)
-		res.json({
+		res.status(400).json({
 			message: err.message,
 		})
 	}
