@@ -51,7 +51,7 @@ const PropertySchema = new Schema(
 		},
 		placeInfo: PlaceSchema,
 		price: {
-			type: String,
+			type: Number,
 			required: true,
 		},
 		address: {
@@ -85,5 +85,6 @@ const PropertySchema = new Schema(
 	{ timestamps: true },
 )
 PropertySchema.index({ location: '2dsphere' })
+PropertySchema.index({ price: 'ascending' })
 
 export default model('property', PropertySchema)
