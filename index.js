@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import './src/utils/envConnect.js'
 import connectDB from './src/middleware/essentials.js'
 import AddPropertyRouter from './src/controllers/addPropertyController.js'
@@ -15,6 +16,7 @@ app.use(
 		origin: 'http://localhost:5173',
 	}),
 )
+app.use(cookieParser())
 app.use(express.json())
 app.use(AddPropertyRouter)
 app.use('/property', GetPropertyRouter)

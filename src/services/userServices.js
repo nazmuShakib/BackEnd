@@ -1,18 +1,26 @@
 import UserModel from '../models/userModel.js'
 import { getNanoID } from '../utils/uniqueIdGenerator.js'
-import { comparePassword } from '../utils/userAuthentication.js'
+import { REFRESH_TOKEN } from '../config/authSettings.js'
+import { hashRefreshToken } from '../utils/userAuthentication.js'
 
 const addUser = async (req, res) => {
 	try {
-		const { password, ...data } = req.body
+		const data = req.body
 		const userID = getNanoID(22)
 		const newUser = new UserModel({
 			userID,
 			...data,
-			password,
 		})
 		await newUser.save()
-		res.status(201).send('Success')
+		const accessToken = await newUser.generateAccessToken()
+		const refreshToken = await newUser.generateRefreshToken()
+		res
+			.cookie(REFRESH_TOKEN.cookie.name, refreshToken, REFRESH_TOKEN.cookie.options)
+			.status(201)
+			.json({
+				message: 'New user created successfully',
+				accessToken,
+			})
 	} catch (err) {
 		res.status(500).json({
 			message: err.message,
@@ -22,25 +30,37 @@ const addUser = async (req, res) => {
 const userLogin = async (req, res) => {
 	try {
 		const { email, password } = req.body
-		const user = await UserModel.findUser(email)
-		if (!user) {
-			res.status(404).json({ message: 'User not found' })
-		} else {
-			const passwordCheck = await comparePassword(password, user.password)
-			if (!passwordCheck) {
-				res.status(401).json({
-					message: 'Authentication failed',
-				})
-			} else {
-				res.status(200).json({
-					data: user,
-				})
-			}
-		}
+		const user = await UserModel.login(email, password)
+		const accessToken = await user.generateAccessToken()
+		const refreshToken = await user.generateRefreshToken()
+		res
+			.cookie(REFRESH_TOKEN.cookie.name, refreshToken, REFRESH_TOKEN.cookie.options)
+			.status(200)
+			.json({
+				message: 'Login successful',
+				accessToken,
+			})
 	} catch (err) {
 		res.status(401).json({
-			message: 'Authentication Failed',
+			message: err.message,
 		})
 	}
 }
-export { addUser, userLogin }
+const userLogout = async (req, res) => {
+	try {
+		const { userID } = req.user
+		const user = await UserModel.findOne({ userID })
+		const refreshToken = req?.cookies[REFRESH_TOKEN.cookie.name]
+		const hashedRefreshToken = hashRefreshToken(refreshToken)
+		user.tokens = user.tokens.filter((token) => token !== hashedRefreshToken)
+		await user.save()
+		res.clearCookie(REFRESH_TOKEN.cookie.name).status(200).json({
+			message: 'Successfully logged out',
+		})
+	} catch (err) {
+		res.status(500).json({
+			message: err.message,
+		})
+	}
+}
+export { addUser, userLogin, userLogout }

@@ -1,10 +1,10 @@
 import express from 'express'
-import { addUser, userLogin } from '../services/userServices.js'
-import checkUserExists from '../middleware/userAuthentication.js'
+import { addUser, userLogin, userLogout } from '../services/userServices.js'
+import { checkUserExists, verifyUser } from '../middleware/userAuthentication.js'
 
 const router = express.Router()
 
-router.route('/').post(checkUserExists, addUser)
+router.route('/register').post(checkUserExists, addUser)
 router.route('/login').post(userLogin)
-
+router.route('/logout').get(verifyUser, userLogout)
 export default router
