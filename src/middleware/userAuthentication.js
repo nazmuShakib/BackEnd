@@ -17,6 +17,25 @@ const checkUserExists = async (req, res, next) => {
 		next(err)
 	}
 }
+const verifyAccessTokenExpiration = async (req, res, next) => {
+	try {
+		const authHeader = req.header('Authorization')
+		if (!authHeader?.startsWith('Bearer ')) {
+			return res.status(403).json({ message: 'Forbidden' })
+		}
+		const splitToken = authHeader.split(' ')
+		const accessToken = splitToken[1]
+		jwt.verify(accessToken, ACCESS_TOKEN.secret)
+		return res.status(401).json({
+			message: 'False Token Expiration',
+		})
+	} catch (err) {
+		if (err.name === 'TokenExpiredError') {
+			return next()
+		}
+		return next(err)
+	}
+}
 const verifyUser = async (req, res, next) => {
 	try {
 		const authHeader = req.header('Authorization')
@@ -26,19 +45,21 @@ const verifyUser = async (req, res, next) => {
 		const splitToken = authHeader.split(' ')
 		const accessToken = splitToken[1]
 		jwt.verify(accessToken, ACCESS_TOKEN.secret, (err, decode) => {
-			if (err) throw new Error('Authentication Failed')
+			if (err) throw err
 			else {
 				req.user = decode
 			}
 		})
 		return next()
 	} catch (err) {
-		return res.json({
-			message: 'Authentication Failed',
+		if (err.name === 'TokenExpiredError') {
+			return res.status(401).json({
+				message: 'Token expired',
+			})
+		}
+		return res.status(400).json({
+			message: 'Bad request',
 		})
-		// if (err.name === 'TokenExpiredError') {
-		// }
-		// next(err)
 	}
 }
-export { checkUserExists, verifyUser }
+export { checkUserExists, verifyAccessTokenExpiration, verifyUser }

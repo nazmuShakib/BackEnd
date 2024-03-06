@@ -55,9 +55,6 @@ const userSchema = new Schema(
 						expiresIn: ACCESS_TOKEN.expiry,
 					},
 				)
-				const hashedAccessToken = hashRefreshToken(accessToken)
-				this.tokens.push({ token: hashedAccessToken })
-				await this.save()
 				return accessToken
 			},
 			async generateRefreshToken() {
