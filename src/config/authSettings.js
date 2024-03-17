@@ -5,9 +5,9 @@ const REFRESH_TOKEN = {
 		name: 'refreshToken',
 		options: {
 			httpOnly: true,
-			// sameSite: 'None',
-			// secure: true,
-			maxAge: 60 * 60 * 1000,
+			sameSite: 'None',
+			secure: false,
+			maxAge: 10 * 60 * 1000,
 		},
 	},
 }
