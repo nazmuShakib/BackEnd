@@ -46,6 +46,7 @@ const userLogin = async (req, res) => {
 			.json({
 				message: 'Login successful',
 				accessToken,
+				userID: user.userID,
 			})
 	} catch (err) {
 		return res.status(401).json({
@@ -73,7 +74,6 @@ const userLogout = async (req, res) => {
 const refreshAccessToken = async (req, res) => {
 	try {
 		const { cookies } = req
-		console.log(cookies)
 		if (!cookies[REFRESH_TOKEN.cookie.name]) {
 			return res.status(400).json({
 				message: 'Authentication Failed',
@@ -93,6 +93,7 @@ const refreshAccessToken = async (req, res) => {
 		return res.json({
 			message: 'Renewed access token',
 			accessToken: newAccessToken,
+			userID: user.userID,
 		})
 	} catch (err) {
 		return res.status(401).json({ message: err.message })

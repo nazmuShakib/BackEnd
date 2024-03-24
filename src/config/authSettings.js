@@ -6,8 +6,8 @@ const REFRESH_TOKEN = {
 		options: {
 			httpOnly: true,
 			sameSite: 'None',
-			secure: false,
-			maxAge: 10 * 60 * 1000,
+			secure: true,
+			maxAge: 100 * 60 * 1000,
 		},
 	},
 }
