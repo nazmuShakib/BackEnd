@@ -75,10 +75,9 @@ const refreshAccessToken = async (req, res) => {
 	try {
 		const { cookies } = req
 		if (!cookies[REFRESH_TOKEN.cookie.name]) {
-			return res.status(400).json({
-				message: 'Authentication Failed',
+			return res.status(401).json({
+				message: 'Unauthorized',
 			})
-			// throw new Error('Authentication Failed')
 		}
 		const refreshToken = cookies[REFRESH_TOKEN.cookie.name]
 		const decode = jwt.verify(refreshToken, REFRESH_TOKEN.secret)

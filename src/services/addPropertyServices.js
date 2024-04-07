@@ -1,4 +1,5 @@
 import PropertyModel from '../models/propertyModel.js'
+import MyPropertyModel from '../models/myPropertyModel.js'
 import { getNanoID } from '../utils/uniqueIdGenerator.js'
 import {
 	getImageUrls,
@@ -45,7 +46,12 @@ const addProperty = async (req, res) => {
 			imageUrls,
 			thumbnail,
 		})
-		await newProperty.save()
+		const property = await newProperty.save()
+		const myProperty = new MyPropertyModel({
+			userID: req.user.userID,
+			property: property.id,
+		})
+		await myProperty.save()
 		res.status(200).end('Property saved successfully')
 	} catch (err) {
 		console.log(err.message)

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import UserModel from '../models/userModel.js'
-import { ACCESS_TOKEN } from '../config/authSettings.js'
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../config/authSettings.js'
 
 const checkUserExists = async (req, res, next) => {
 	try {
@@ -38,6 +38,12 @@ const verifyAccessTokenExpiration = async (req, res, next) => {
 }
 const verifyUser = async (req, res, next) => {
 	try {
+		const { cookies } = req
+		if (!cookies[REFRESH_TOKEN.cookie.name]) {
+			return res.status(401).json({
+				message: 'Unauthorized',
+			})
+		}
 		const authHeader = req.header('Authorization')
 		if (!authHeader?.startsWith('Bearer ')) {
 			return res.status(403).json({ message: 'Forbidden' })

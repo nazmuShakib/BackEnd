@@ -7,12 +7,12 @@ const REFRESH_TOKEN = {
 			httpOnly: true,
 			sameSite: 'None',
 			secure: true,
-			maxAge: 100 * 60 * 1000,
+			maxAge: 24 * 60 * 60 * 1000,
 		},
 	},
 }
 const ACCESS_TOKEN = {
 	secret: process.env.AUTH_ACCESS_TOKEN_SECRET,
-	expiry: 10 * 60,
+	expiry: 5 * 60 * 60,
 }
 export { ACCESS_TOKEN, REFRESH_TOKEN }
