@@ -52,7 +52,9 @@ const addProperty = async (req, res) => {
 			property: property.id,
 		})
 		await myProperty.save()
-		res.status(200).end('Property saved successfully')
+		res.json({
+			message: 'Successfully created property',
+		})
 	} catch (err) {
 		console.log(err.message)
 		res.status(400).json({

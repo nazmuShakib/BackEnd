@@ -1,5 +1,4 @@
 import PropertyModel from '../models/propertyModel.js'
-import MyPropertyModel from '../models/myPropertyModel.js'
 
 const getPropertyByID = async (req, res) => {
 	try {
@@ -17,24 +16,6 @@ const getPropertyByID = async (req, res) => {
 		})
 	}
 }
-const getMyProperties = async (req, res) => {
-	const { userID } = req.user
-	try {
-		const properties = await MyPropertyModel.find(
-			{ userID },
-			{ _id: 0, __v: 0, createdAt: 0, updatedAt: 0 },
-		)
-			.populate('property')
-			.exec()
-		res.json({
-			data: properties,
-		})
-	} catch (err) {
-		res.status(400).json({
-			message: err.message,
-		})
-	}
-}
 const getProperty = async (req, res) => {
 	try {
 		const data = await PropertyModel.find()
@@ -45,4 +26,4 @@ const getProperty = async (req, res) => {
 		})
 	}
 }
-export { getProperty, getPropertyByID, getMyProperties }
+export { getProperty, getPropertyByID }
