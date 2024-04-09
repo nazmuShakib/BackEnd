@@ -58,6 +58,10 @@ const PropertySchema = new Schema(
 			type: String,
 			required: true,
 		},
+		contact: {
+			type: String,
+			required: true,
+		},
 		thumbnail: {
 			type: String,
 			required: true,
@@ -82,7 +86,32 @@ const PropertySchema = new Schema(
 			},
 		},
 	},
-	{ timestamps: true },
+	{
+		timestamps: true,
+		statics: {
+			updatePropertyByID(propertyID, newData) {
+				this.findOneAndUpdate(
+					{ ID: propertyID },
+					{
+						$set: {
+							ID: propertyID,
+							title: newData.title,
+							availableDate: newData.date,
+							description: newData.description,
+							rulesAndPreference: newData?.rules_and_preference,
+							requiredDocuments: newData?.required_documents,
+							price: parseInt(newData.price, 10),
+							address: newData.address,
+							contact: newData.contact,
+						},
+					},
+					{
+						returnDocument: 'after',
+					},
+				).exec()
+			},
+		},
+	},
 )
 PropertySchema.index({ location: '2dsphere' })
 PropertySchema.index({ price: 'ascending' })

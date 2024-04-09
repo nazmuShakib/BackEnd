@@ -19,6 +19,13 @@ const getProperties = async (req, res) => {
 		})
 	}
 }
+const editProperty = async (req, res) => {
+	const { info, ID } = req.body
+	await PropertyModel.updatePropertyByID(ID, info)
+	res.json({
+		message: 'Successfully edited property',
+	})
+}
 const removeProperty = async (req, res) => {
 	const { propertyID } = req.params
 	const property = await PropertyModel.findOneAndDelete({ ID: propertyID })
@@ -27,4 +34,4 @@ const removeProperty = async (req, res) => {
 		message: 'Successfully removed property',
 	})
 }
-export { getProperties, removeProperty }
+export { getProperties, editProperty, removeProperty }

@@ -38,6 +38,7 @@ const addProperty = async (req, res) => {
 			},
 			price: parseInt(propertyData.price, 10),
 			address: propertyData.address,
+			contact: propertyData.contact,
 			images: propertyData.images,
 			location: {
 				type: 'Point',
