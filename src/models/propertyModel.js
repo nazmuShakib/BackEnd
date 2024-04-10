@@ -21,6 +21,10 @@ const PropertySchema = new Schema(
 			type: String,
 			required: true,
 		},
+		active: {
+			type: Boolean,
+			default: true,
+		},
 		title: {
 			type: String,
 			required: true,
@@ -89,8 +93,8 @@ const PropertySchema = new Schema(
 	{
 		timestamps: true,
 		statics: {
-			updatePropertyByID(propertyID, newData) {
-				this.findOneAndUpdate(
+			async updatePropertyByID(propertyID, newData) {
+				await this.findOneAndUpdate(
 					{ ID: propertyID },
 					{
 						$set: {
@@ -108,6 +112,17 @@ const PropertySchema = new Schema(
 					{
 						returnDocument: 'after',
 					},
+				).exec()
+			},
+			async updateStatus(propertyID, status) {
+				await this.findOneAndUpdate(
+					{ ID: propertyID },
+					{
+						$set: {
+							active: status,
+						},
+					},
+					{ returnDocument: 'after' },
 				).exec()
 			},
 		},

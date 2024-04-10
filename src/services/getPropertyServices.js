@@ -18,7 +18,7 @@ const getPropertyByID = async (req, res) => {
 }
 const getProperty = async (req, res) => {
 	try {
-		const data = await PropertyModel.find()
+		const data = await PropertyModel.find({ active: true })
 		res.json({ data })
 	} catch (err) {
 		res.json({
