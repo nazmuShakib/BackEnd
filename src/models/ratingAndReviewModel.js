@@ -41,6 +41,10 @@ const RatingReviewSchema = Schema(
 				})
 				await ratingReview.save()
 			},
+			async getReviews(propertyID) {
+				const property = await this.findOne({ propertyID })
+				return property?.reviews
+			},
 		},
 	},
 )

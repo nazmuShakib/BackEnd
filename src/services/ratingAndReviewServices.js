@@ -14,4 +14,18 @@ const postReview = async (req, res) => {
 		})
 	}
 }
-export default postReview
+const getReviews = async (req, res) => {
+	const { propertyID } = req.params
+	try {
+		const reviews = await RatingAndReviewModel.getReviews(propertyID)
+		res.json({
+			message: 'Successfully retrieved reviews',
+			data: reviews,
+		})
+	} catch (err) {
+		res.status(500).json({
+			message: 'Failed to retrieve reviews',
+		})
+	}
+}
+export { postReview, getReviews }
