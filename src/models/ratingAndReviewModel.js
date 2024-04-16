@@ -5,6 +5,10 @@ const ReviewSchema = Schema({
 		type: String,
 		required: true,
 	},
+	name: {
+		type: String,
+		required: true,
+	},
 	review: {
 		type: String,
 		required: true,
@@ -25,10 +29,14 @@ const RatingReviewSchema = Schema(
 	{
 		timestamps: true,
 		statics: {
-			async postReview(propertyID, review, userID) {
-				const ratingReview = await this.findOne({ propertyID })
+			async postReview(propertyID, name, review, userID) {
+				let ratingReview = await this.findOne({ propertyID })
+				if (!ratingReview) {
+					ratingReview = new this({ propertyID, reviews: [] })
+				}
 				await ratingReview.reviews.push({
 					userID,
+					name,
 					review,
 				})
 				await ratingReview.save()

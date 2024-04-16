@@ -49,7 +49,7 @@ const userSchema = new Schema(
 		methods: {
 			async generateAccessToken() {
 				const accessToken = jwt.sign(
-					{ userID: this.userID, name: this.userName, email: this.email },
+					{ userID: this.userID, name: this.username, email: this.email },
 					ACCESS_TOKEN.secret,
 					{
 						expiresIn: ACCESS_TOKEN.expiry,
