@@ -1,12 +1,23 @@
 import express from 'express'
 import { verifyUser } from '../middleware/userAuthentication.js'
-import { postReview, getReviews } from '../services/ratingAndReviewServices.js'
+import {
+	postReview,
+	getReviews,
+	postRating,
+	getRating,
+	getRatings,
+} from '../services/ratingAndReviewServices.js'
 
-const router = express.Router()
+const reviewRouter = express.Router()
+const ratingRouter = express.Router()
 
-router.use(verifyUser)
+ratingRouter.use(verifyUser)
+reviewRouter.use(verifyUser)
 
-router.route('/post').post(postReview)
-router.route('/get/:propertyID').get(getReviews)
+reviewRouter.route('/post').post(postReview)
+reviewRouter.route('/get/:propertyID').get(getReviews)
+ratingRouter.route('/post').post(postRating)
+ratingRouter.route('/get/:propertyID').get(getRating)
+ratingRouter.route('/get/all/:propertyID').get(getRatings)
 
-export default router
+export { reviewRouter, ratingRouter }
