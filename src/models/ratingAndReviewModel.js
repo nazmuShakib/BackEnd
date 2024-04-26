@@ -13,6 +13,10 @@ const ReviewSchema = Schema({
 		type: String,
 		required: true,
 	},
+	postTime: {
+		type: Date,
+		required: true,
+	},
 })
 const RatingSchema = Schema({
 	userID: {
@@ -44,7 +48,7 @@ const RatingReviewSchema = Schema(
 	{
 		timestamps: true,
 		statics: {
-			async postReview(propertyID, name, review, userID) {
+			async postReview(propertyID, name, review, postTime, userID) {
 				let property = await this.findOne({ propertyID })
 				if (!property) {
 					property = new this({ propertyID, reviews: [], ratings: [] })
@@ -53,6 +57,7 @@ const RatingReviewSchema = Schema(
 					userID,
 					name,
 					review,
+					postTime,
 				})
 				await property.save()
 			},
@@ -87,12 +92,13 @@ const RatingReviewSchema = Schema(
 			},
 			async getRatings(propertyID) {
 				const property = await this.findOne({ propertyID })
-				if (!property) return []
 				const count = new Array(6)
 				for (let i = 0; i <= 5; i += 1) count[i] = 0
-				await property.ratings.forEach((user) => {
-					count[user.rating] += 1
-				})
+				if (property) {
+					await property.ratings.forEach((user) => {
+						count[user.rating] += 1
+					})
+				}
 				return count
 			},
 		},
