@@ -10,14 +10,17 @@ import {
 
 const reviewRouter = express.Router()
 const ratingRouter = express.Router()
+const publicRatingReviewRouter = express.Router()
 
 ratingRouter.use(verifyUser)
 reviewRouter.use(verifyUser)
 
 reviewRouter.route('/post').post(postReview)
-reviewRouter.route('/get/:propertyID').get(getReviews)
+
 ratingRouter.route('/post').post(postRating)
 ratingRouter.route('/get/:propertyID').get(getRating)
-ratingRouter.route('/get/all/:propertyID').get(getRatings)
 
-export { reviewRouter, ratingRouter }
+publicRatingReviewRouter.route('/reviews/:propertyID').get(getReviews)
+publicRatingReviewRouter.route('/ratings/:propertyID').get(getRatings)
+
+export { reviewRouter, ratingRouter, publicRatingReviewRouter }

@@ -8,7 +8,11 @@ import GetPropertyRouter from './src/controllers/getPropertyController.js'
 import MyPropertyRouter from './src/controllers/myPropertyController.js'
 import SearchPropertyRouter from './src/controllers/searchPropertyController.js'
 import UserRouter from './src/controllers/userController.js'
-import { reviewRouter, ratingRouter } from './src/controllers/ratingAndReviewController.js'
+import {
+	reviewRouter,
+	ratingRouter,
+	publicRatingReviewRouter,
+} from './src/controllers/ratingAndReviewController.js'
 
 connectDB()
 const app = express()
@@ -28,6 +32,7 @@ app.use('/search', SearchPropertyRouter)
 app.use('/user', UserRouter)
 app.use('/reviews', reviewRouter)
 app.use('/ratings', ratingRouter)
+app.use('/reviews-ratings/get', publicRatingReviewRouter)
 
 app.listen(process.env.PORT, () => {
 	console.log(`listening on port ${process.env.PORT}`)
