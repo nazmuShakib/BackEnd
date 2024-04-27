@@ -1,5 +1,5 @@
 import express from 'express'
-import { addUser, userLogin, userLogout, refreshAccessToken } from '../services/userServices.js'
+import { addUser, userLogin, userLogout, refreshAccessToken } from '../services/userAuthServices.js'
 import { checkUserExists, verifyUser } from '../middleware/userAuthentication.js'
 import signUpValidator from '../middleware/signUpValidation.js'
 
