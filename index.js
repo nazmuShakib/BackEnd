@@ -8,6 +8,7 @@ import GetPropertyRouter from './src/controllers/getPropertyController.js'
 import MyPropertyRouter from './src/controllers/myPropertyController.js'
 import SearchPropertyRouter from './src/controllers/searchPropertyController.js'
 import userAuthRouter from './src/controllers/userAuthController.js'
+import userProfileRouter from './src/controllers/userProfileController.js'
 import {
 	reviewRouter,
 	ratingRouter,
@@ -30,6 +31,7 @@ app.use('/property', GetPropertyRouter)
 app.use('/myProperty', MyPropertyRouter)
 app.use('/search', SearchPropertyRouter)
 app.use('/user', userAuthRouter)
+app.use('/profile', userProfileRouter)
 app.use('/reviews', reviewRouter)
 app.use('/ratings', ratingRouter)
 app.use('/reviews-ratings/get', publicRatingReviewRouter)

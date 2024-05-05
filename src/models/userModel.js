@@ -45,6 +45,13 @@ const userSchema = new Schema(
 				if (!auth) throw new Error('Authentication Failed')
 				return user
 			},
+			async getUserInfo(userID) {
+				const { username, email } = await this.findOne({ userID })
+				return { username, email }
+			},
+			async updateUserName(userID, username) {
+				await this.findOneAndUpdate({ userID }, { $set: { username } }, { returnOriginal: false })
+			},
 		},
 		methods: {
 			async generateAccessToken() {
