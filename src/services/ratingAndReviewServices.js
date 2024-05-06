@@ -2,10 +2,10 @@ import RatingAndReviewModel from '../models/ratingAndReviewModel.js'
 import notificationModel from '../models/notificationModel.js'
 
 const postReview = async (req, res) => {
-	const { userID, name } = req.user
+	const { userID } = req.user
 	const { propertyID, review, postTime } = req.body
 	try {
-		await RatingAndReviewModel.postReview(propertyID, name, review, postTime, userID)
+		await RatingAndReviewModel.postReview(propertyID, review, postTime, userID)
 		await notificationModel.addNotification(
 			userID,
 			propertyID,

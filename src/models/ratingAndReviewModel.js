@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import userModel from './userModel.js'
 
 const ReviewSchema = Schema({
 	userID: {
@@ -6,7 +7,8 @@ const ReviewSchema = Schema({
 		required: true,
 	},
 	name: {
-		type: String,
+		type: Schema.Types.ObjectId,
+		ref: 'user',
 		required: true,
 	},
 	review: {
@@ -48,14 +50,15 @@ const RatingReviewSchema = Schema(
 	{
 		timestamps: true,
 		statics: {
-			async postReview(propertyID, name, review, postTime, userID) {
+			async postReview(propertyID, review, postTime, userID) {
 				let property = await this.findOne({ propertyID })
+				const user = await userModel.findOne({ userID })
 				if (!property) {
 					property = new this({ propertyID, reviews: [], ratings: [] })
 				}
 				await property.reviews.push({
 					userID,
-					name,
+					name: user.id,
 					review,
 					postTime,
 				})
@@ -80,8 +83,13 @@ const RatingReviewSchema = Schema(
 				await property.save()
 			},
 			async getReviews(propertyID) {
-				const property = await this.findOne({ propertyID })
-				return property?.reviews
+				const property = await this.findOne({ propertyID }).populate('reviews.name')
+				if (!property?.reviews) return []
+				const populatedReviews = property.reviews.map((review) => ({
+					...review.toObject(),
+					name: review.name.username,
+				}))
+				return populatedReviews
 			},
 			async getRating(propertyID, userID) {
 				const property = await this.findOne({ propertyID })
