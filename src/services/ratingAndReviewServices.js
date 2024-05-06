@@ -1,10 +1,16 @@
 import RatingAndReviewModel from '../models/ratingAndReviewModel.js'
+import notificationModel from '../models/notificationModel.js'
 
 const postReview = async (req, res) => {
 	const { userID, name } = req.user
 	const { propertyID, review, postTime } = req.body
 	try {
 		await RatingAndReviewModel.postReview(propertyID, name, review, postTime, userID)
+		await notificationModel.addNotification(
+			userID,
+			propertyID,
+			`Successfully reviewed about property no ${propertyID}`,
+		)
 		res.status(200).json({
 			message: 'Successfully posted a review',
 		})

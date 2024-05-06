@@ -1,5 +1,6 @@
 import PropertyModel from '../models/propertyModel.js'
 import MyPropertyModel from '../models/myPropertyModel.js'
+import notificationModel from '../models/notificationModel.js'
 import { getNanoID } from '../utils/uniqueIdGenerator.js'
 import {
 	getImageUrls,
@@ -12,6 +13,7 @@ const addProperty = async (req, res) => {
 	try {
 		const propertyID = getNanoID(22)
 		const { data } = req.body
+		const { userID } = req.user
 		const images = req.files
 		const imageNames = images.map((name) => name.originalname)
 		await Promise.all(images.map((image) => uploadImageToStorage(image, propertyID)))
@@ -53,6 +55,11 @@ const addProperty = async (req, res) => {
 			property: property.id,
 		})
 		await myProperty.save()
+		await notificationModel.addNotification(
+			userID,
+			propertyID,
+			`Successfully created property no ${propertyID}`,
+		)
 		res.json({
 			message: 'Successfully created property',
 		})

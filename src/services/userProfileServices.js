@@ -1,4 +1,5 @@
 import UserModel from '../models/userModel.js'
+import notificationModel from '../models/notificationModel.js'
 
 const getUserInfo = async (req, res) => {
 	const { userID } = req.user
@@ -28,4 +29,18 @@ const updateUserName = async (req, res) => {
 		})
 	}
 }
-export { getUserInfo, updateUserName }
+const getNotifications = async (req, res) => {
+	const { userID } = req.user
+	try {
+		const notifications = await notificationModel.getNotifications(userID)
+		res.status(200).json({
+			message: 'Successfully retrieved notifications',
+			data: notifications,
+		})
+	} catch (err) {
+		res.status(500).json({
+			message: 'Failed to get notifications',
+		})
+	}
+}
+export { getUserInfo, updateUserName, getNotifications }
