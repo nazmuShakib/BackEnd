@@ -8,7 +8,7 @@ import GetPropertyRouter from './src/controllers/getPropertyController.js'
 import MyPropertyRouter from './src/controllers/myPropertyController.js'
 import SearchPropertyRouter from './src/controllers/searchPropertyController.js'
 import userAuthRouter from './src/controllers/userAuthController.js'
-import userProfileRouter from './src/controllers/userProfileController.js'
+import { authUserRouter, publicUserRouter } from './src/controllers/userProfileController.js'
 import {
 	reviewRouter,
 	ratingRouter,
@@ -26,12 +26,13 @@ app.use(
 )
 app.use(cookieParser())
 app.use(express.json())
-app.use(AddPropertyRouter)
+app.use('/addProperty', AddPropertyRouter)
 app.use('/property', GetPropertyRouter)
 app.use('/myProperty', MyPropertyRouter)
 app.use('/search', SearchPropertyRouter)
 app.use('/user', userAuthRouter)
-app.use('/profile', userProfileRouter)
+app.use('/profile/public/', publicUserRouter)
+app.use('/profile', authUserRouter)
 app.use('/reviews', reviewRouter)
 app.use('/ratings', ratingRouter)
 app.use('/reviews-ratings/get', publicRatingReviewRouter)

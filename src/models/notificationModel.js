@@ -40,7 +40,9 @@ const notificationSchema = new Schema(
 				await userNotification.save()
 			},
 			async getNotifications(userID) {
-				const { notifications } = await this.findOne({ userID })
+				const user = await this.findOne({ userID })
+				if (!user) return []
+				const { notifications } = user
 				notifications.sort((a, b) => b.createdAt - a.createdAt)
 				return notifications
 			},

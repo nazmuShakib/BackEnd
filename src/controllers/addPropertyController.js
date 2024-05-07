@@ -8,6 +8,6 @@ const router = express.Router()
 const memoryStorage = multer.memoryStorage()
 const upload = multer({ memoryStorage })
 
-router.route('/addProperty').post(upload.any(), verifyUser, formValidator, addProperty)
+router.route('/').post(upload.any(), verifyUser, formValidator, addProperty)
 
 export default router

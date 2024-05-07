@@ -15,6 +15,20 @@ const getUserInfo = async (req, res) => {
 		})
 	}
 }
+const getUserInfoWithID = async (req, res) => {
+	const { userID } = req.params
+	try {
+		const user = await UserModel.getUserInfo(userID)
+		res.status(200).json({
+			message: 'User info retrieved successfully',
+			data: user,
+		})
+	} catch (err) {
+		res.status(500).json({
+			message: 'Error retrieving user info',
+		})
+	}
+}
 const updateUserName = async (req, res) => {
 	const { name } = req.body
 	const { userID } = req.user
@@ -43,4 +57,18 @@ const getNotifications = async (req, res) => {
 		})
 	}
 }
-export { getUserInfo, updateUserName, getNotifications }
+const getNotificationsWithID = async (req, res) => {
+	const { userID } = req.params
+	try {
+		const notifications = await notificationModel.getNotifications(userID)
+		res.status(200).json({
+			message: 'Successfully retrieved notifications',
+			data: notifications,
+		})
+	} catch (err) {
+		res.status(500).json({
+			message: 'Failed to get notifications',
+		})
+	}
+}
+export { getUserInfo, updateUserName, getNotifications, getUserInfoWithID, getNotificationsWithID }

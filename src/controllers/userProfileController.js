@@ -1,11 +1,22 @@
 import express from 'express'
-import { getUserInfo, updateUserName, getNotifications } from '../services/userProfileServices.js'
+import {
+	getUserInfo,
+	getUserInfoWithID,
+	updateUserName,
+	getNotifications,
+	getNotificationsWithID,
+} from '../services/userProfileServices.js'
 import { verifyUser } from '../middleware/userAuthentication.js'
 
-const router = express.Router()
+const authUserRouter = express.Router({ strict: true })
+const publicUserRouter = express.Router({ strict: true })
 
-router.use(verifyUser)
-router.route('/get-info').get(getUserInfo)
-router.route('/edit/name').patch(updateUserName)
-router.route('/notifications').get(getNotifications)
-export default router
+authUserRouter.use(verifyUser)
+authUserRouter.route('/get-info').get(getUserInfo)
+authUserRouter.route('/edit/name').patch(updateUserName)
+authUserRouter.route('/notifications').get(getNotifications)
+
+publicUserRouter.route('/get-info/:userID').get(getUserInfoWithID)
+publicUserRouter.route('/notifications/:userID').get(getNotificationsWithID)
+
+export { authUserRouter, publicUserRouter }
