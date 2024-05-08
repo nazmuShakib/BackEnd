@@ -9,6 +9,8 @@ import MyPropertyRouter from './src/controllers/myPropertyController.js'
 import SearchPropertyRouter from './src/controllers/searchPropertyController.js'
 import userAuthRouter from './src/controllers/userAuthController.js'
 import { authUserRouter, publicUserRouter } from './src/controllers/userProfileController.js'
+import publicRouter from './src/controllers/publicController.js'
+
 import {
 	reviewRouter,
 	ratingRouter,
@@ -36,6 +38,7 @@ app.use('/profile', authUserRouter)
 app.use('/reviews', reviewRouter)
 app.use('/ratings', ratingRouter)
 app.use('/reviews-ratings/get', publicRatingReviewRouter)
+app.use('/public', publicRouter)
 
 app.listen(process.env.PORT, () => {
 	console.log(`listening on port ${process.env.PORT}`)
