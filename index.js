@@ -6,6 +6,7 @@ import connectDB from './src/middleware/essentials.js'
 import AddPropertyRouter from './src/controllers/addPropertyController.js'
 import GetPropertyRouter from './src/controllers/getPropertyController.js'
 import MyPropertyRouter from './src/controllers/myPropertyController.js'
+import myFavoriteRouter from './src/controllers/myFavoriteController.js'
 import SearchPropertyRouter from './src/controllers/searchPropertyController.js'
 import userAuthRouter from './src/controllers/userAuthController.js'
 import { authUserRouter, publicUserRouter } from './src/controllers/userProfileController.js'
@@ -31,6 +32,7 @@ app.use(express.json())
 app.use('/addProperty', AddPropertyRouter)
 app.use('/property', GetPropertyRouter)
 app.use('/myProperty', MyPropertyRouter)
+app.use('/favorites', myFavoriteRouter)
 app.use('/search', SearchPropertyRouter)
 app.use('/user', userAuthRouter)
 app.use('/profile/public/', publicUserRouter)
