@@ -40,6 +40,18 @@ const myFavoriteSchema = new Schema(
 				if (!properties?.properties) return []
 				return properties.properties
 			},
+			async removeFavorite(userID, propertyID) {
+				const user = await this.findOne({ userID })
+				if (!user) throw new Error('User not found')
+				const newFavorites = []
+				user.properties.forEach((favorite) => {
+					if (favorite.property.toString() !== propertyID) {
+						newFavorites.push(favorite)
+					}
+				})
+				user.properties = newFavorites
+				await user.save()
+			},
 		},
 	},
 )

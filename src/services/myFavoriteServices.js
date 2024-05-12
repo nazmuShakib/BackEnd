@@ -26,4 +26,25 @@ const getFavorites = async (req, res) => {
 		})
 	}
 }
-export { addToFavorite, getFavorites }
+const removeFavorite = async (req, res) => {
+	const { propertyID } = req.params
+	const { userID } = req.user
+	try {
+		const property = await propertyModel.findOne({ ID: propertyID })
+		if (!property) {
+			res.status(404).json({
+				message: 'Property not found',
+			})
+		} else {
+			await myFavoriteModel.removeFavorite(userID, property.id)
+			res.status(200).json({
+				message: 'Successfully removed favorite',
+			})
+		}
+	} catch (err) {
+		res.status(500).json({
+			message: err.message,
+		})
+	}
+}
+export { addToFavorite, getFavorites, removeFavorite }
