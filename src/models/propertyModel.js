@@ -125,6 +125,15 @@ const PropertySchema = new Schema(
 					{ returnDocument: 'after' },
 				).exec()
 			},
+			async getPropertyTransactionInfo(propertyID) {
+				const { title, price, placeInfo } = await this.findOne({ ID: propertyID })
+				const data = {
+					title,
+					price,
+					placeInfo,
+				}
+				return data
+			},
 		},
 	},
 )

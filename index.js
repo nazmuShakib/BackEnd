@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import './src/utils/envConnect.js'
+import corsOptions from './src/utils/cors.js'
 import connectDB from './src/middleware/essentials.js'
 import AddPropertyRouter from './src/controllers/addPropertyController.js'
 import GetPropertyRouter from './src/controllers/getPropertyController.js'
@@ -11,6 +12,7 @@ import SearchPropertyRouter from './src/controllers/searchPropertyController.js'
 import userAuthRouter from './src/controllers/userAuthController.js'
 import { authUserRouter, publicUserRouter } from './src/controllers/userProfileController.js'
 import publicRouter from './src/controllers/publicController.js'
+import paymentRouter from './src/controllers/transactionController.js'
 
 import {
 	reviewRouter,
@@ -21,12 +23,7 @@ import {
 connectDB()
 const app = express()
 
-app.use(
-	cors({
-		origin: 'http://localhost:5173',
-		credentials: true,
-	}),
-)
+app.use(cors(corsOptions))
 app.use(cookieParser())
 app.use(express.json())
 app.use('/addProperty', AddPropertyRouter)
@@ -41,6 +38,7 @@ app.use('/reviews', reviewRouter)
 app.use('/ratings', ratingRouter)
 app.use('/reviews-ratings/get', publicRatingReviewRouter)
 app.use('/public', publicRouter)
+app.use('/payment', paymentRouter)
 
 app.listen(process.env.PORT, () => {
 	console.log(`listening on port ${process.env.PORT}`)
