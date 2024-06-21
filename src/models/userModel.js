@@ -9,6 +9,10 @@ const userSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		isVerified: {
+			type: Boolean,
+			default: false,
+		},
 		username: {
 			type: String,
 			required: true,
@@ -29,7 +33,7 @@ const userSchema = new Schema(
 				},
 			},
 		],
-		resetPasswordToken: String,
+		resetPasswordToken: [String],
 		resetPasswordTokenExpiration: Date,
 	},
 	{
@@ -37,6 +41,9 @@ const userSchema = new Schema(
 		statics: {
 			async userExists(email) {
 				return this.findOne({ email })
+			},
+			async userIDExists(userID) {
+				return this.findOne({ userID })
 			},
 			async login(email, password) {
 				const user = await this.findOne({ email })
@@ -72,6 +79,10 @@ const userSchema = new Schema(
 				this.tokens.push({ token: hashedRefreshToken })
 				await this.save()
 				return refreshToken
+			},
+			async verifyUser() {
+				this.isVerified = true
+				await this.save()
 			},
 		},
 	},
