@@ -23,7 +23,7 @@ const myPropertySchema = Schema(
 					{ _id: 0, __v: 0, createdAt: 0, updatedAt: 0 },
 				)
 					.select('-_id -__v -createdAt -updatedAt')
-					.populate({ path: 'property', select: '-_id -__v -createdAt -updatedAt' })
+					.populate({ path: 'property', select: '-_id -__v -createdAt -updatedAt -bkash' })
 					.exec()
 				return properties
 			},

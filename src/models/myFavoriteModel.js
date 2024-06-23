@@ -35,7 +35,7 @@ const myFavoriteSchema = new Schema(
 				if (!user) return []
 				const properties = await user.populate({
 					path: 'properties.property',
-					select: '-_id -__v -createdAt -updatedAt',
+					select: '-_id -__v -createdAt -updatedAt -bkash',
 				})
 				if (!properties?.properties) return []
 				return properties.properties

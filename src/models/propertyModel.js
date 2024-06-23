@@ -66,6 +66,10 @@ const PropertySchema = new Schema(
 			type: String,
 			required: true,
 		},
+		bkash: {
+			type: String,
+			required: true,
+		},
 		thumbnail: {
 			type: String,
 			required: true,
@@ -126,8 +130,9 @@ const PropertySchema = new Schema(
 				).exec()
 			},
 			async getPropertyTransactionInfo(propertyID) {
-				const { title, price, placeInfo } = await this.findOne({ ID: propertyID })
+				const { title, price, placeInfo, bkash } = await this.findOne({ ID: propertyID })
 				const data = {
+					bkash,
 					title,
 					price,
 					placeInfo,

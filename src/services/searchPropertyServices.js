@@ -31,7 +31,13 @@ const searchProperty = async (req, res) => {
 			query.price = { ...query.price, $lte: propertyPriceRange[1] }
 		}
 		if (!propertyCategory.includes('Any')) query.category = { $in: propertyCategory }
-		const result = await PropertyModel.find(query, { _id: 0, __v: 0, createdAt: 0, updatedAt: 0 })
+		const result = await PropertyModel.find(query, {
+			_id: 0,
+			__v: 0,
+			createdAt: 0,
+			updatedAt: 0,
+			bkash: 0,
+		})
 		res.json({
 			data: result,
 		})
