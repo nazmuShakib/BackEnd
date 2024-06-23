@@ -89,7 +89,19 @@ const imageSchema = z.object({
 			return !res.includes(false)
 		}, 'Only .jpg, .jpeg, .png and .webp formats are supported.'),
 })
-
+const ForgetPasswordSchema = z.object({
+	email: z.string().email('Invalid email address'),
+})
+const ResetPasswordSchema = z.object({
+	password: z
+		.string()
+		.regex(
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&])[A-Za-z!@#$%&\d]+$/,
+			"Password doesn't contain a lowercase, uppercase and special character",
+		)
+		.regex(/^[A-Za-z!@#$%&\d]+$/, 'Invalid characters')
+		.min(8, 'Password must be at least 8 characters'),
+})
 const formValidator = (req, res, next) => {
 	try {
 		const { data } = req.body
@@ -102,4 +114,23 @@ const formValidator = (req, res, next) => {
 		next(err)
 	}
 }
+const forgetPasswordEmailValidator = (req, res, next) => {
+	try {
+		const { email } = req.body
+		ForgetPasswordSchema.parse({ email })
+		next()
+	} catch (err) {
+		next(err)
+	}
+}
+const resetPasswordValidator = (req, res, next) => {
+	try {
+		const { password } = req.body
+		ResetPasswordSchema.parse({ password })
+		next()
+	} catch (err) {
+		next(err)
+	}
+}
 export default formValidator
+export { forgetPasswordEmailValidator, resetPasswordValidator }
