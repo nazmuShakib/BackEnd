@@ -21,6 +21,10 @@ const PropertySchema = new Schema(
 			type: String,
 			required: true,
 		},
+		userID: {
+			type: String,
+			required: true,
+		},
 		active: {
 			type: Boolean,
 			default: true,
@@ -97,9 +101,9 @@ const PropertySchema = new Schema(
 	{
 		timestamps: true,
 		statics: {
-			async updatePropertyByID(propertyID, newData) {
+			async updatePropertyByID(propertyID, userID, newData) {
 				await this.findOneAndUpdate(
-					{ ID: propertyID },
+					{ ID: propertyID, userID },
 					{
 						$set: {
 							ID: propertyID,
@@ -118,9 +122,9 @@ const PropertySchema = new Schema(
 					},
 				).exec()
 			},
-			async updateStatus(propertyID, status) {
+			async updateStatus(propertyID, userID, status) {
 				await this.findOneAndUpdate(
-					{ ID: propertyID },
+					{ ID: propertyID, userID },
 					{
 						$set: {
 							active: status,
@@ -129,8 +133,8 @@ const PropertySchema = new Schema(
 					{ returnDocument: 'after' },
 				).exec()
 			},
-			async getPropertyTransactionInfo(propertyID) {
-				const { title, price, placeInfo, bkash } = await this.findOne({ ID: propertyID })
+			async getPropertyTransactionInfo(propertyID, userID) {
+				const { title, price, placeInfo, bkash } = await this.findOne({ ID: propertyID, userID })
 				const data = {
 					bkash,
 					title,

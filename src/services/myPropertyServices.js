@@ -23,7 +23,7 @@ const getProperties = async (req, res) => {
 const editProperty = async (req, res) => {
 	const { info, ID } = req.body
 	const { userID } = req.user
-	await PropertyModel.updatePropertyByID(ID, info)
+	await PropertyModel.updatePropertyByID(ID, userID, info)
 	await notificationModel.addNotification(userID, ID, `Successfully updated property no ${ID}`)
 	res.json({
 		message: 'Successfully edited property',
@@ -32,7 +32,7 @@ const editProperty = async (req, res) => {
 const updateStatus = async (req, res) => {
 	const { status, ID } = req.body
 	const { userID } = req.user
-	await PropertyModel.updateStatus(ID, status)
+	await PropertyModel.updateStatus(ID, userID, status)
 	await notificationModel.addNotification(
 		userID,
 		ID,
@@ -45,7 +45,7 @@ const updateStatus = async (req, res) => {
 const removeProperty = async (req, res) => {
 	const { propertyID } = req.params
 	const { userID } = req.user
-	const property = await PropertyModel.findOneAndDelete({ ID: propertyID })
+	const property = await PropertyModel.findOneAndDelete({ ID: propertyID, userID })
 	await MyPropertyModel.removeProperty(property.id)
 	await notificationModel.addNotification(
 		userID,

@@ -26,6 +26,7 @@ const addProperty = async (req, res) => {
 		const imageUrls = getImageUrls(images, propertyID)
 		const newProperty = new PropertyModel({
 			ID: propertyID,
+			userID,
 			title: propertyData.title,
 			availableDate: propertyData.date,
 			gender: propertyData.gender,
