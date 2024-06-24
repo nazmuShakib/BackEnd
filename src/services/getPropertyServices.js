@@ -4,7 +4,7 @@ const getPropertyByID = async (req, res) => {
 	try {
 		const id = req.params.propertyID
 		const property = await PropertyModel.findOne(
-			{ ID: id },
+			{ ID: id, active: true },
 			{ _id: 0, __v: 0, createdAt: 0, updatedAt: 0, bkash: 0 },
 		)
 		res.json({

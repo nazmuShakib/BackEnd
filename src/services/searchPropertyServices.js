@@ -14,6 +14,7 @@ const searchProperty = async (req, res) => {
 		const propertyCategory = category || DEFAULT_SEARCH_CATEGORY
 		const propertyPriceRange = priceRange || DEFAULT_SEARCH_PRICE_RANGE
 		const query = {
+			active: true,
 			location: {
 				$near: {
 					$geometry: {

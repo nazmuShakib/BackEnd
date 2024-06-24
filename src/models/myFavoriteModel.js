@@ -35,10 +35,12 @@ const myFavoriteSchema = new Schema(
 				if (!user) return []
 				const properties = await user.populate({
 					path: 'properties.property',
+					match: { active: true },
 					select: '-_id -__v -createdAt -updatedAt -bkash',
 				})
 				if (!properties?.properties) return []
-				return properties.properties
+				const result = properties.properties.filter((property) => property.property !== null)
+				return result
 			},
 			async removeFavorite(userID, propertyID) {
 				const user = await this.findOne({ userID })

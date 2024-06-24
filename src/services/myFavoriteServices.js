@@ -30,7 +30,7 @@ const removeFavorite = async (req, res) => {
 	const { propertyID } = req.params
 	const { userID } = req.user
 	try {
-		const property = await propertyModel.findOne({ ID: propertyID })
+		const property = await propertyModel.findOne({ ID: propertyID, active: true })
 		if (!property) {
 			res.status(404).json({
 				message: 'Property not found',

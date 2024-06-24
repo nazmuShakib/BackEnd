@@ -29,7 +29,9 @@ const myPropertySchema = Schema(
 			},
 			async hasProperty(userID, propertyID) {
 				const properties = await this.getPropertiesByUserID(userID)
-				const has = properties.find((property) => property.property.ID === propertyID)
+				const has = properties.find(
+					(property) => property.property.ID === propertyID && property.property.active,
+				)
 				if (has) return true
 				return false
 			},

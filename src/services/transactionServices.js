@@ -10,8 +10,7 @@ const makePayment = async (req, res) => {
 	const { userID } = req.user
 	try {
 		const hasProperty = await myPropertyModel.hasProperty(userID, propertyID)
-		console.log(hasProperty)
-		if (hasProperty) throw new Error('Cannot rent personal property')
+		if (hasProperty) throw new Error('Cannot rent property')
 		const info = await propertyModel.getPropertyTransactionInfo(propertyID)
 		const transactionID = getNanoID(30)
 		const data = {
