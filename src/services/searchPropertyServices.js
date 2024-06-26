@@ -38,9 +38,17 @@ const searchProperty = async (req, res) => {
 			createdAt: 0,
 			updatedAt: 0,
 			bkash: 0,
-		})
+		}).limit(150)
+		const mess = result.filter((property) => property.category === 'Mess')
+		const hostel = result.filter((property) => property.category === 'Hostel')
+		const sublet = result.filter((property) => property.category === 'Sublet')
+		const all = {
+			mess,
+			hostel,
+			sublet,
+		}
 		res.json({
-			data: result,
+			data: all,
 		})
 	} catch (err) {
 		res.status(400).json({

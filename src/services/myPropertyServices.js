@@ -11,8 +11,25 @@ const getProperties = async (req, res) => {
 		)
 			.populate('property')
 			.exec()
+
+		const mess = []
+		const hostel = []
+		const sublet = []
+
+		properties.forEach((property) => {
+			if (property.property.category === 'Mess') mess.push(property.property)
+			else if (property.property.category === 'Hostel') hostel.push(property.property)
+			else if (property.property.category === 'Sublet') sublet.push(property.property)
+		})
+
+		const all = {
+			mess,
+			hostel,
+			sublet,
+		}
+
 		res.json({
-			data: properties,
+			data: all,
 		})
 	} catch (err) {
 		res.status(400).json({

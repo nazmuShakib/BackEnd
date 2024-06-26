@@ -40,7 +40,20 @@ const myFavoriteSchema = new Schema(
 				})
 				if (!properties?.properties) return []
 				const result = properties.properties.filter((property) => property.property !== null)
-				return result
+				const mess = []
+				const hostel = []
+				const sublet = []
+				result.forEach((property) => {
+					if (property.property.category === 'Mess') mess.push(property.property)
+					else if (property.property.category === 'Hostel') hostel.push(property.property)
+					else if (property.property.category === 'Sublet') sublet.push(property.property)
+				})
+				const all = {
+					mess,
+					hostel,
+					sublet,
+				}
+				return all
 			},
 			async removeFavorite(userID, propertyID) {
 				const user = await this.findOne({ userID })
