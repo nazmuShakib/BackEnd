@@ -1,6 +1,7 @@
 import PropertyModel from '../models/propertyModel.js'
 import {
 	DEFAULT_SEARCH_CATEGORY,
+	DEFAULT_SEARCH_GENDER,
 	DEFAULT_SEARCH_LOCATION,
 	DEFAULT_SEARCH_PRICE_RANGE,
 	DEFAULT_MAX_PROPERTY_SEARCH_DISTANCE,
@@ -9,9 +10,10 @@ import {
 const searchProperty = async (req, res) => {
 	try {
 		const data = req.body
-		const { location, category, priceRange } = data
+		const { location, category, genders, priceRange } = data
 		const propertyLocation = location || DEFAULT_SEARCH_LOCATION
 		const propertyCategory = category || DEFAULT_SEARCH_CATEGORY
+		const propertyGender = genders || DEFAULT_SEARCH_GENDER
 		const propertyPriceRange = priceRange || DEFAULT_SEARCH_PRICE_RANGE
 		const query = {
 			active: true,
@@ -32,6 +34,7 @@ const searchProperty = async (req, res) => {
 			query.price = { ...query.price, $lte: propertyPriceRange[1] }
 		}
 		if (!propertyCategory.includes('Any')) query.category = { $in: propertyCategory }
+		if (!propertyGender.includes('Any')) query.gender = { $in: propertyGender }
 		const result = await PropertyModel.find(query, {
 			_id: 0,
 			__v: 0,
