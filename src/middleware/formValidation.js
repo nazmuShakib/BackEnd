@@ -63,6 +63,10 @@ const PropertySchema = z.object({
 		message: 'Required',
 	}),
 
+	bkash: z.string().refine((data) => data !== '', {
+		message: 'Required',
+	}),
+
 	address: z
 		.string()
 		.max(100, 'max 100 characters')
