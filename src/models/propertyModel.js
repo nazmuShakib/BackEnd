@@ -134,6 +134,8 @@ const PropertySchema = new Schema(
 				).exec()
 			},
 			async getPropertyTransactionInfo(propertyID, userID) {
+				console.log(propertyID)
+				console.log(userID)
 				const { title, price, placeInfo, bkash } = await this.findOne({ ID: propertyID, userID })
 				const data = {
 					bkash,

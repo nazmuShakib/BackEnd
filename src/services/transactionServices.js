@@ -6,12 +6,13 @@ import notificationModel from '../models/notificationModel.js'
 import { getNanoID } from '../utils/uniqueIdGenerator.js'
 
 const makePayment = async (req, res) => {
-	const { propertyID } = req.body
+	const { propertyID, propertyOwner } = req.body
 	const { userID } = req.user
 	try {
 		const hasProperty = await myPropertyModel.hasProperty(userID, propertyID)
 		if (hasProperty) throw new Error('Cannot rent property')
-		const info = await propertyModel.getPropertyTransactionInfo(propertyID, userID)
+		const info = await propertyModel.getPropertyTransactionInfo(propertyID, propertyOwner)
+
 		const transactionID = getNanoID(30)
 		const data = {
 			total_amount: info.price,
@@ -49,7 +50,7 @@ const makePayment = async (req, res) => {
 		const sslcz = new SSLCommerzPayment(storeID, storePassword, isLive)
 		const { GatewayPageURL, gw, redirectGatewayURL, desc } = await sslcz.init(data)
 		// const bkashGateway = desc.find((item) => item.gw === 'bkash')
-		await transactionModel.createTransaction(userID, propertyID, transactionID)
+		await transactionModel.createTransaction(userID, propertyID, propertyOwner, transactionID)
 		res.json({
 			message: `Redirect to ${GatewayPageURL}`,
 			url: GatewayPageURL,

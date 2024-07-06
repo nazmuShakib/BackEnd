@@ -13,6 +13,10 @@ const transactionSchema = new Schema(
 					type: String,
 					required: true,
 				},
+				propertyOwner: {
+					type: String,
+					required: true,
+				},
 				transactionID: {
 					type: String,
 					required: true,
@@ -31,13 +35,14 @@ const transactionSchema = new Schema(
 	{
 		timestamps: true,
 		statics: {
-			async createTransaction(userID, propertyID, transactionID) {
+			async createTransaction(userID, propertyID, propertyOwner, transactionID) {
 				let user = await this.findOne({ userID })
 				if (!user) {
 					user = new this({ userID, transactions: [] })
 				}
 				user.transactions.push({
 					propertyID,
+					propertyOwner,
 					transactionID,
 					transactionTime: new Date(),
 				})
