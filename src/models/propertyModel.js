@@ -70,6 +70,10 @@ const PropertySchema = new Schema(
 			type: String,
 			required: true,
 		},
+		optionalContact: {
+			type: String,
+			default: '',
+		},
 		bkash: {
 			type: String,
 			required: true,

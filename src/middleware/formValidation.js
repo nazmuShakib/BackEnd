@@ -63,6 +63,17 @@ const PropertySchema = z.object({
 		message: 'Required',
 	}),
 
+	optional_contact: z
+		.string()
+		.refine(
+			(data) => {
+				if (data !== '' && !/^(?:(?:\+|00)88|01)?\d{11}$/.test(data)) return false
+				return true
+			},
+			{ message: 'Invalid contact number' },
+		)
+		.optional(),
+
 	bkash: z.string().refine((data) => data !== '', {
 		message: 'Required',
 	}),
