@@ -98,4 +98,18 @@ const validate = async (req, res) => {
 	console.log('validate')
 	res.redirect(process.env.PAYMENT_FAILURE_URLL)
 }
-export { makePayment, successfulPayment, failedPayment, ipnPayment, validate }
+const getTransactions = async (req, res) => {
+	const { userID } = req.user
+	try {
+		const transactions = await transactionModel.getTransactions(userID)
+		res.json({
+			data: transactions,
+		})
+	} catch (err) {
+		res.status(400).json({
+			message: 'Could not get transactions',
+		})
+	}
+}
+
+export { makePayment, successfulPayment, failedPayment, ipnPayment, validate, getTransactions }
