@@ -68,6 +68,15 @@ const transactionSchema = new Schema(
 				user.transactions = res
 				await user.save()
 			},
+<<<<<<< Updated upstream
+=======
+			async getTransactions(userID) {
+				const user = await this.findOne({ userID })
+				// if (!user) throw new Error('No transaction found')
+				if (!user) return []
+				return user.transactions
+			},
+>>>>>>> Stashed changes
 		},
 	},
 )
